@@ -151,6 +151,35 @@ public class DBEngine {
         return userIdMap;
     } // getBDATE()
 
+Public Map<String, String> timeline(String handle, String password, String newest, String oldest, String tstamp){
+Map<String, String> userIdMap = new HashMap<>();
+PreparedStatement stmt = null;
+try{
+Connection conn = ds.getConnection();
+string queryString = null;
+queryString = "SELECT FROM Story VALUES(Identity.idnum, Story.idnum, ?) WHERE tstamp IS GREATER THAN ? AND LESS THAN ?";
+stmt = conn.PreparedStatement(queryString);
+stmt.setString(1, tstamp);
+stmt.setString(2, oldest);
+stmt.setString(3, newest);
+ResultSet rs = stmt.executeQuery();
+while (rs.next()){
+                String idnum = Integer.toString(rs.getInt("idnum"));
+                userIdMap.put("idnum", idnum);
+            }
+ String idnum = userIdMap.get("idnum");
+            stmt.executeQuery();
+
+rs.close()
+smt.close();
+conn.close();
+}
+catch(Exception ex){
+	ex.printStackTrace();
+
+}
+return userIdMap;
+}
 
     public Map<String,String> block(String handle, String password){
         Map<String, String> userIdMap = new HashMap<>();
