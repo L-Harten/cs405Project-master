@@ -399,7 +399,7 @@ return userIdMap;
             Connection conn = ds.getConnection();
             String queryString = null;
             //query string to post a story for the user
-            queryString = "INSERT INTO Reprint VALUES(Identity.idnum, Story.idnum, ?, ? WHERE Identity.handle=?";
+            queryString = "INSERT INTO Reprint VALUES(Identity.idnum, Story.idnum, ?, ?) WHERE Identity.handle=?";
             stmt = conn.prepareStatement(queryString);
             stmt.setBoolean(1, like);
             stmt.setString(2, tstamp);
@@ -412,6 +412,7 @@ return userIdMap;
             String idnum = userIdMap.get("idnum");
             stmt.executeQuery();
             stmt.close();
+            rs.close();
             conn.close();
         }
         catch(Exception ex) {
