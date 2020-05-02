@@ -470,11 +470,37 @@ public class API {
 	// Output: {"0":"{\"type\":\"story\",\"author\":\"@cooldude44\",\"sidnum\":\"14\",\"chapter\":\"Just some set math, SQL is super fun!\",\"posted\":\"2020-04-16 15:37:48\"}","1":"{\"type\":\"reprint\",\"author\":\"@cooldude44\",\"sidnum\":\"15\",\"chapter\":\"JSON objects are fun and useful!\",\"posted\":\"2020-04-15 10:37:44\"}","status":"2"}
 	// Output: {"status":"0"}
 	// etc.
-	@GET
+@Get
 	@Path("/timeline")
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response timeline(){
+	@Procedures(MediaType.APPLICATION_JSON)
+	public Response timeline(InputStream InputData){
+	String responseString = "{\"status_code\":}";
+	StringBuilder crunchifyBuilder = new StringBuilder();
+	try{
+	BufferedReader in = new BufferedReader(new InputStreamReader(InputData));
+            String line = null;
+	while ((line = in.readLine()) != null){
+	crunchifyBuilder.append(line);
+	}
+	Map<String, String> userMap = gson.fromJson(jsonString, mapType);
+	String handle = userMap.get("handle");
+	String password = userMap.get("password");
+	String newest = userMap.get("newest");
+	String oldest = userMap.get("oldest");
+	String tstamps = userMap.get("tstamps");
+	String idnum = userMap.get("idnum");
+	String chapter = userMap.get("chapter");
+	String responseString =  {"0":"{\"type\":\"story\",\"author\":\""+handle+"\",\"sidnum\":\""+idnum+"\",\"chapter\":\""+chapter+"\",\"posted\":\""+tstamps+"\"}"; 
 
 	}
+	catch (Exception ex){
+	StringWriter sw = new StringWriter();
+	ex.printStackTrace(new PrintWriter(sw));
+    String exceptionAsString = sw.toString();
+    ex.printStackTrace();
+    return Response.status(500).entity(exceptionAsString).build();
+	}
+	return Response.ok(responseString).header("Access-Control-Allow-Origin", "*").build();
+    } // API.java
 
     } // API.java
