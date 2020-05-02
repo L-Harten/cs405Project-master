@@ -328,6 +328,8 @@ public class API {
 			boolean like = Boolean.parseBoolean(likeit);
             java.time.LocalDateTime now = java.time.LocalDateTime.now();
             String timestamp = now.toString();
+            Map <String, String> myMap = Launcher.dbEngine.reprint(handle, password, like, timestamp);
+            responseString = "{\"status\":\"1\"}";
         }
         catch (Exception ex) {
 	        StringWriter sw = new StringWriter();
